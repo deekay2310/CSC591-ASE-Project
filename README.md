@@ -7,47 +7,47 @@
 <!--Badges-->
 
 ![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/palash27/ASE-HW-Group7/python-app.yml)](https://github.com/palash27/ASE-HW-Group7/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/deekay2310/CSC591-ASE-Project-Group-7/python-app.yml)](https://github.com/deekay2310/CSC591-ASE-Project-Group-7/actions)
 
-[![GitHub](https://img.shields.io/github/license/palash27/ASE-HW-Group7)](https://github.com/palash27/ASE-HW-Group7/blob/main/LICENSE.md)
-<a href="https://github.com/palash27/ASE-HW-Group7/fork" target="blank">
-<img src="https://img.shields.io/github/forks/palash27/ASE-HW-Group7?style=flat-square" alt="Simplii forks"/>
+[![GitHub](https://img.shields.io/github/license/palash27/ASE-HW-Group7)](https://github.com/deekay2310/CSC591-ASE-Project-Group-7/blob/main/LICENSE.md)
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/fork" target="blank">
+<img src="https://img.shields.io/github/forks/deekay2310/CSC591-ASE-Project-Group-7?style=flat-square" alt="Project forks"/>
 </a>
-<a href="https://github.com/palash27/ASE-HW-Group7/stargazers" target="blank">
-<img src="https://img.shields.io/github/stars/palash27/ASE-HW-Group7?style=flat-square" alt="Simplii stars"/>
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/stargazers" target="blank">
+<img src="https://img.shields.io/github/stars/deekay2310/CSC591-ASE-Project-Group-7?style=flat-square" alt="Project stars"/>
 </a>
-<a href="https://github.com/palash27/ASE-HW-Group7/issues" target="blank">
-<img src="https://img.shields.io/github/issues/palash27/ASE-HW-Group7?style=flat-square" alt="Simplii issues"/>
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/issues" target="blank">
+<img src="https://img.shields.io/github/issues/deekay2310/CSC591-ASE-Project-Group-7?style=flat-square" alt="Project issues"/>
 </a>
-<a href="https://github.com/palash27/ASE-HW-Group7/issues" target="blank">
-<img src="https://img.shields.io/github/issues-closed/palash27/ASE-HW-Group7" alt="Simplii issues closed"/>
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/issues" target="blank">
+<img src="https://img.shields.io/github/issues-closed/deekay2310/CSC591-ASE-Project-Group-7" alt="Project issues closed"/>
 </a>
-<a href="https://github.com/palash27/ASE-HW-Group7/pulls" target="blank">
-<img src="https://img.shields.io/github/issues-pr/palash27/ASE-HW-Group7?style=flat-square" alt="cheapBuy pull-requests"/>
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/pulls" target="blank">
+<img src="https://img.shields.io/github/issues-pr/deekay2310/CSC591-ASE-Project-Group-7?style=flat-square" alt="Project pull-requests"/>
 </a>
-<a href="https://github.com/palash27/ASE-HW-Group7/graphs/contributors" alt="Contributors">
-<img src="https://img.shields.io/github/contributors/palash27/ASE-HW-Group7" /></a>
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/graphs/contributors" alt="Contributors">
+<img src="https://img.shields.io/github/contributors/deekay2310/CSC591-ASE-Project-Group-7" /></a>
 
-<a href="https://github.com/palash27/ASE-HW-Group7/milestones" alt="milestones">
-<img src="https://img.shields.io/github/milestones/all/palash27/ASE-HW-Group7" /></a> 
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/milestones" alt="milestones">
+<img src="https://img.shields.io/github/milestones/all/deekay2310/CSC591-ASE-Project-Group-7" /></a> 
 
-<a href="https://github.com/palash27/ASE-HW-Group7/graphs/commit-activity" alt="commit activity">
-<img src="https://img.shields.io/github/commit-activity/w/palash27/ASE-HW-Group7" /></a> 
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/graphs/commit-activity" alt="commit activity">
+<img src="https://img.shields.io/github/commit-activity/w/deekay2310/CSC591-ASE-Project-Group-7" /></a> 
 
-<a href="https://github.com/palash27/ASE-HW-Group7/discussions" alt="discussion">
-<img src="https://img.shields.io/github/discussions/palash27/ASE-HW-Group7" /></a> 
+<a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/discussions" alt="discussion">
+<img src="https://img.shields.io/github/discussions/deekay2310/CSC591-ASE-Project-Group-7" /></a> 
 
-<a href="https://img.shields.io/github/repo-size/palash27/ASE-HW-Group7" alt="repo size">
-<img src="https://img.shields.io/github/repo-size/palash27/ASE-HW-Group7" /></a>
+<a href="https://img.shields.io/github/repo-size/deekay2310/CSC591-ASE-Project-Group-7" alt="repo size">
+<img src="https://img.shields.io/github/repo-size/deekay2310/CSC591-ASE-Project-Group-7" /></a>
 
-<a href="https://img.shields.io/tokei/lines/github/palash27/ASE-HW-Group7" alt="total lines">
-<img src="https://img.shields.io/tokei/lines/github/palash27/ASE-HW-Group7" /></a>
+<a href="https://img.shields.io/tokei/lines/github/deekay2310/CSC591-ASE-Project-Group-7" alt="total lines">
+<img src="https://img.shields.io/tokei/lines/github/deekay2310/CSC591-ASE-Project-Group-7" /></a>
 <br>
 
 <!-- <p align="center">
-    <a href="https://github.com/palash27/ASE-Group7-HW/issues/new/choose">Report Bug</a>
+    <a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/issues/new/choose">Report Bug</a>
     /
-    <a href="https://github.com/palash27/ASE-Group7-HW/issues/new/choose">Request Feature</a>
+    <a href="https://github.com/deekay2310/CSC591-ASE-Project-Group-7/issues/new/choose">Request Feature</a>
 </p> -->
 
 

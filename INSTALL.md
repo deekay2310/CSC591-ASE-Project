@@ -11,7 +11,7 @@ Before you begin, make sure you have the following software installed on your sy
 
 1. Download the latest version of the Project by cloning the repository using git:
 ```
-git clone https://github.com/palash27/ASE-HW-Group7.git
+git clone https://github.com/deekay2310/CSC591-ASE-Project-Goup-7.git
 ```
 
 

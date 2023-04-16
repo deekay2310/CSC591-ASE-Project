@@ -17,8 +17,9 @@ class Cols:
         self.y = []
         self.klass = None
         for n,s in enumerate(t):
+            s=s.strip()
             pattern = "^[A-Z]+"
-            col_cond = re.search(pattern, s)
+            col_cond = re.findall(pattern, s)
             if col_cond:
                 col = Num(n,s)
             else:

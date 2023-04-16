@@ -1,6 +1,7 @@
 from misc import *
 from Rows import *
 from Cols import *
+from Num import *
 import operator
 import math 
 import copy
@@ -128,7 +129,7 @@ class Data:
         # A = above or rows[1]
         A = above if above and the['Reuse'] else any(some)
         temp = sorted(list(map(function, some)), key = lambda k : k["dist"])
-        far = temp[int(float(the['Far']) * len(rows)//1)]
+        far = temp[int(float(the['Far']) * len(temp)//1)]
         # B = self.around(A, the, some)[int(float(the['Far']) * len(rows))//1]['row']
         # B = self.furthest(A,rows)['row']
         B = far['row']
@@ -176,12 +177,15 @@ class Data:
         """
         s1,s2,ys = 0,0,self.cols.y
         x,y = None, None
-        
+        #print(ys)
         for col in ys:
-            x  = col.norm(row1.cells[col.at])
-            y  = col.norm(row2.cells[col.at])
-            s1 = s1 - math.exp(col.w * (x-y)/len(ys))
-            s2 = s2 - math.exp(col.w * (y-x)/len(ys))
+            try:
+                x  = col.norm(row1.cells[col.at])
+                y  = col.norm(row2.cells[col.at])
+                s1 = s1 - math.exp(col.w * (x-y)/len(ys))
+                s2 = s2 - math.exp(col.w * (y-x)/len(ys))
+            except AttributeError:
+                pass
         return s1/len(ys) < s2/len(ys)
 
     def sway(self, the):
@@ -243,7 +247,7 @@ class Data:
             for range in ranges:
                 print(range['txt'], range['lo'], range['hi'])
                 tmp.append({'range':range, 'max':len(ranges),'val': v(range['y'].has)})
-        rule,most=firstN(sorted(tmp, key=operator.itemgetter('val')),score)
+        rule,most=firstN(sorted(tmp, key=lambda x: x['val']),score)
         return rule,most
     
     def RULE(self, ranges, maxSize):
@@ -267,7 +271,7 @@ class Data:
             else:
                 return [range['lo'], range['hi']]
         def merges(attr, ranges):
-            return list(map(pretty, merge(sorted(ranges, key = operator.itemgetter('lo'))))), attr
+            return list(map(pretty, merge(sorted(ranges, key = lambda x: x['lo'])))), attr
         def merge(t0):
             t = []
             j = 1

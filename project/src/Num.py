@@ -61,7 +61,7 @@ class Num:
         if x == "?":
             return x
         else:
-            return rnd(x,n)
+            return round(x,n)
         
     def norm(self, n):
         """

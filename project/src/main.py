@@ -9,7 +9,7 @@ script.lua : an example script with help text and a test suite
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
   -d  --dump  on crash, dump stack = false
-  -f  --file    name of file       = data/data.csv
+  -f  --file    name of file       = data/SSN.csv
   -F  --Far     distance to "faraway"  = .95
   -g  --go      start-up action        = data
   -h  --help    show help              = false

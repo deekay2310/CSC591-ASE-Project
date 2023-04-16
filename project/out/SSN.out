@@ -1,0 +1,7 @@
+-----------
+explain= {'Crf': [[-inf, 201.0]]}
+all                {'PSNR-': 44.53, 'Energy-': 1658.0} {'PSNR-': 6.47, 'Energy-': 1610.66}
+sway with 9 evals {'PSNR-': 42.55, 'Energy-': 4554.24} {'PSNR-': 4.77, 'Energy-': 1331.38}
+xpln on 9 evals {'PSNR-': 44.45, 'Energy-': 1657.93} {'PSNR-': 6.26, 'Energy-': 1606.63}
+sort with 53662 evals {'PSNR-': 44.17, 'Energy-': 3927.99} {'PSNR-': 5.0, 'Energy-': 2476.5}
+✅ pass: xpln

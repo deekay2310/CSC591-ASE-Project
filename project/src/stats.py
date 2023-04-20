@@ -3,7 +3,6 @@ import random
 import re
 from Num import *
 
-# the = {'bootstrap': 512, 'conf' : 0.05, 'cliff' : 0.4, 'cohen' : 0.35, 'Fmt' : """'%6.2f'""", 'width' : 40}
 the = { 'dump': False, 'go': None, 'seed': 937162211, 'bootstrap':512, 'conf':0.05, 'cliffs':.4, 'cohen':.35, 'Fmt': "{:.2f}", 'width':40, 'n_iter': 20, 'min': 0.5, 'Halves': 512, 'Far': 0.95, 'Reuse': True, 'rest': 10, 'bins': 16, 'd': 0.35}
 
 def erf(x, a1, a2, a3, a4, a5, p, sign): 

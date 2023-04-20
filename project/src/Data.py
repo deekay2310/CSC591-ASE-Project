@@ -6,6 +6,10 @@ import operator
 import math 
 import copy
 from functools import cmp_to_key
+from sklearn.cluster import KMeans
+import numpy as np
+from sklearn.cluster import DBSCAN
+from sklearn.metrics.pairwise import pairwise_distances
 
 class DATA:
     def __init__(self, src = None, rows = None):
@@ -142,6 +146,30 @@ class DATA:
         evals = 1 if the['Reuse'] and above else 2
         return left, right, A, B, c, evals
 
+    def half2(self, the, rows = None):
+
+        def euclidean_distance(row1, row2):
+            arr1 = np.array(row1.cells)
+            arr2 = np.array(row2.cells)
+            return np.sqrt(np.sum((arr1 - arr2)**2))
+
+        
+        n = len(rows)
+        
+        i, j = np.random.choice(n, size=2, replace=False)
+        A = rows[i]
+        B = rows[j]
+        
+        distances_A = [euclidean_distance(row, A) for row in rows]
+        distances_B = [euclidean_distance(row, B) for row in rows]
+        distances = np.vstack([distances_A, distances_B])
+        
+        labels = np.argmin(distances, axis=0)
+        cluster_A = [row for row, label in zip(rows, labels) if label == 0]
+        cluster_B = [row for row, label in zip(rows, labels) if label == 1]
+        
+        return cluster_A, cluster_B, A, B, 1
+        
 
     # def cluster(self, the, rows = None,min = None,cols = None,above = None):
     #     """
@@ -212,7 +240,7 @@ class DATA:
             if len(rows) <= len(data.rows)**float(the['min']):
                 return rows, many(worse, int(the['rest'])*len(rows)),evals
             else:
-                l, r, A, B, c, evals1 = self.half(the, rows, None, above) 
+                l, r, A, B, evals1 = self.half2(the, rows) 
                 if self.better(B, A):
                     l,r,A,B = r,l,B,A
                 for row in r:

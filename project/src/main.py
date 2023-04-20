@@ -1,5 +1,6 @@
 from misc import *
 from explain import *
+from explain2 import *
 from Data import *
 from tabulate import tabulate
 import numpy as np
@@ -42,21 +43,24 @@ def main():
         data = DATA(data_file_path)
         data = data_manipulation(data_file_path, DATA)
         best,rest,evals = data.sway()
+        best2,rest2,evals2 = data.sway2()
         xp = XPLN(best, rest)
+        xp2 = XPLN2(best2, rest2)
         rule,_= xp.xpln(data,best,rest)
-        if rule != -1:
+        rule2,_ = xp2.xpln2(data,best2,rest2)
+        if rule != -1 and rule2 != 1:
             betters, _ = data.betters(len(best.rows))
             tbl1['top']['data'].append(DATA(data,betters))
             tbl1['xpln1']['data'].append(DATA(data,selects(rule,data.rows)))
-            tbl1['xpln2']['data'].append(DATA(data,selects(rule,data.rows)))
+            tbl1['xpln2']['data'].append(DATA(data,selects(rule2,data.rows)))
             tbl1['all']['data'].append(data)
             tbl1['sway1']['data'].append(best)
-            tbl1['sway2']['data'].append(best)
+            tbl1['sway2']['data'].append(best2)
             tbl1['all']['evals'] += 0
             tbl1['sway1']['evals'] += evals
-            tbl1['sway2']['evals'] += evals
+            tbl1['sway2']['evals'] += evals2
             tbl1['xpln1']['evals'] += evals
-            tbl1['xpln2']['evals'] += evals
+            tbl1['xpln2']['evals'] += evals2
             tbl1['top']['evals'] += len(data.rows)
             
             for i in range(len(tbl2)):

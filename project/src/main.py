@@ -40,7 +40,7 @@ def main():
     iterations = 0
     while iterations < the['n_iter']:
         data = DATA(data_file_path)
-        data2 = data_manipulation(data_file_path, DATA)
+        data = data_manipulation(data_file_path, DATA)
         best,rest,evals = data.sway()
         xp = XPLN(best, rest)
         rule,_= xp.xpln(data,best,rest)

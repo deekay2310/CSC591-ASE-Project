@@ -50,7 +50,7 @@ class XPLN:
             return value(has, len(best.rows), len(rest.rows), 'best')
         
         tmp,self.maxSizes = [],{}
-        for _,ranges in enumerate(bins(data.cols.x,{'best':best.rows, 'rest':rest.rows})):
+        for _,ranges in enumerate(bins(the, data.cols.x,{'best':best.rows, 'rest':rest.rows})):
             self.maxSizes[ranges[0]['txt']] = len(ranges)
             for _,range in enumerate(ranges):
                 tmp.append({'range':range, 'max':len(ranges),'val': v(range['y'].has)})

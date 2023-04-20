@@ -236,25 +236,23 @@ def cliffsDelta(the, ns1, ns2):
     --  American Educational Research Association, San Diego, April 12 - 16, 2004    
     --  0.147=  small, 0.33 =  medium, 0.474 = large; med --> small at .2385
     """
-    if(len(ns1)>256):
-        ns1 = many(ns1, 256)
-    if(len(ns2)>256):
-        ns2 = many(ns2, 256)
-    if(len(ns1)>10*len(ns2)):
-        ns1 = many(ns1, 10*len(ns2))
-    if(len(ns2)>10*len(ns1)):
-        ns2= many(ns2, 10*len(ns1))
-    
+    """
+    bool;
+    true if different by a trivial amount
+    """
     n, gt, lt = 0, 0, 0
-    for _,x in enumerate(ns1):
-        for _,y in enumerate(ns2):
-            n+=1
+    if len(ns1) > 128:
+        ns1 = samples(ns1, 128)
+    if len(ns2) > 128:
+        ns2 = samples(ns2, 128)
+    for x in ns1:
+        for y in ns2:
+            n += 1
             if x > y:
-                gt = gt + 1
-            if x < y: 
-                lt = lt + 1
-    
-    return abs(lt-gt)/n > the['cliffs']
+                gt += 1
+            if x < y:
+                lt += 1
+    return abs(lt - gt) / n <= the['cliff']
 
 def bins(the,cols,rowss):
     """

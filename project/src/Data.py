@@ -202,6 +202,28 @@ class DATA:
                 return worker(l,worse,e,A) 
         best,rest,evals1 = worker(data.rows,[])
         return DATA.clone(self, best), DATA.clone(self, rest), evals1
+
+    def sway2(self):
+        """
+        SWAY2 Implementation for the project
+        """
+        data = self
+        def worker(rows, worse, evals=None, above=None):
+            if len(rows) <= len(data.rows)**float(the['min']):
+                return rows, many(worse, int(the['rest'])*len(rows)),evals
+            else:
+                l, r, A, B, c, evals1 = self.half(the, rows, None, above) 
+                if self.better(B, A):
+                    l,r,A,B = r,l,B,A
+                for row in r:
+                    worse.append(row)
+                if evals == None:
+                    e = evals1
+                else:
+                    e = evals+evals1
+                return worker(l,worse,e,A) 
+        best,rest,evals1 = worker(data.rows,[])
+        return DATA.clone(self, best), DATA.clone(self, rest), evals1
     
     def tree(self, rows = None , min = None, cols = None, above = None):
         """

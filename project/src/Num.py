@@ -6,8 +6,8 @@ class Num:
     """
     creating a class Num to accomodate all functions that help in summarizing a stream of numbers.
     """
-    def __init__(self, at='', txt="") -> None:
-        self.n, self.mu, self.m2 = 0,0,0
+    def __init__(self, at='', txt="", t = None) -> None:
+        self.n, self.mu, self.m2, self.sd = 0,0,0,0
         self.lo = math.inf
         self.hi = -math.inf
         self.at = at
@@ -17,7 +17,11 @@ class Num:
         else:
             self.w = -1
         self.has = {}
-
+        
+        if t:
+            for n in t:
+                self.add(n)
+                
     def add(self, x):
         """
         -- Update one COL with `x` (values from one cells of one row).
@@ -92,3 +96,6 @@ class Num:
             else:
                 n2 = 0
         return abs(n1 - n2)
+    
+    def vals(self):
+        return list(dict(sorted(self.has.items(), key=lambda x: x[1])).values())

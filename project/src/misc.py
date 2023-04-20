@@ -252,7 +252,7 @@ def cliffsDelta(the, ns1, ns2):
                 gt += 1
             if x < y:
                 lt += 1
-    return abs(lt - gt) / n <= the['cliff']
+    return abs(lt - gt) / n <= the['cliffs']
 
 def bins(the,cols,rowss):
     """

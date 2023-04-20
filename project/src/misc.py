@@ -9,7 +9,7 @@ import io
 from Num import *
 
 # the = {'bootstrap': 512, 'conf' : 0.05, 'cliff' : 0.4, 'cohen' : 0.35, 'Fmt' : """'%6.2f'""", 'width' : 40}
-
+the = { 'dump': False, 'go': None, 'seed': 937162211, 'bootstrap':512, 'conf':0.05, 'cliff':.4, 'cohen':.35, 'Fmt': "{:.2f}", 'width':40, 'n_iter': 20, 'min': 0.5, 'Halves': 512, 'Far': 0.95, 'Reuse': True, 'rest': 10, 'bins': 16, 'd': 0.35}
 
 #Numerics
 help = """   
@@ -38,7 +38,22 @@ ACTIONS:
   -g  data	read DATA csv
   -g  stats	stats from DATA
 """
-
+# RANGE
+def RANGE(at, txt, lo, hi=None):
+    """
+    -- Create a RANGE  that tracks the y dependent values seen in 
+    -- the range `lo` to `hi` some independent variable in column number `at` whose name is `txt`. 
+    -- Note that the way this is used (in the `bins` function, below)
+    -- for  symbolic columns, `lo` is always the same as `hi`.
+    """
+    res = {}
+    res['at'] = at
+    res['txt'] = txt
+    res['lo'] = lo
+    res['hi'] = lo or hi or lo
+    res['y'] = Sym()
+    return res
+    
 
 def show(node, what, cols, nPlaces, lvl=0):
     """
@@ -89,23 +104,17 @@ def kap(t, fun):
     -- Map a function on table (results in items key1,key2,...)
     """
     x = {}
-    for i in t:
-        k = t.index(i)
-        i, k =fun(k,i)
-        x[k or len(x)] = i
+    if type(t) == list:
+        tmp = enumerate(t)
+    else:
+        tmp = t.items()
+    for k, v in tmp:
+        v, k = fun(k, v)
+        if not k:
+            x[len(x)] = v
+        else:
+            x[k] = v
     return x
-
-def dkap(t, fun):
-    """
-    takes a dictionary t and a function fun as input, applies the function to the keys and values of the dictionary, and returns a new dictionary.
-    """
-    u = {}
-    print("t is ",t)
-    print("fun is ",fun)
-    for k,v in t.items():
-        v, k = fun(k,v) 
-        u[k or len(u)] = v
-    return u
 
 def any(t):
     """
@@ -127,27 +136,24 @@ def cosine(a,b,c):
     --> n,n;  
     find x,y from a line connecting `a` to `b`
     """
-    temp = 1 if c == 0 else 2*c
-    x1 = (a**2 + c**2 - b**2) // temp
-    x2 = max(0, min(1, x1)) 
-    y  = abs((a**2 - x2**2)**0.5)
-    return x2, y
+    if c != 0:
+        return (a**2 + c**2 - b**2) / (2*c)
+    
+    return 0
 
 def coerce(s):
     """
     -- Coerce string to boolean, int,float or (failing all else) strings.
     """
-    def fun(s1):
-        if s1 == "true":
-            return True
-        elif s1 == "false":
-            return False
-        else:
-            return s1
-    if s.isnumeric():
-        return int(s)
-    elif type(s) != bool:
-        return fun(re.search('^[\s]*[\S+]*[\s]*$', s).group(0))
+    bool_s = s.lower()
+    for t in [int, float]:
+        try:
+            return t(s)
+        except ValueError:
+            pass
+    if bool_s in ["true", "false"]:
+        return bool_s == "true"
+    return s
 
 def oo(t):
     """
@@ -182,27 +188,24 @@ def settings(s):
         t[k] = coerce(v)
     return t
 
-def cli(command_line_args):
+def cli(t):
     """
     -- Update `t` using command-line options. For boolean
     -- flags, just flip the default values. For others, read
     -- the new value from the command line.
     """
-    options = {}
-    options = settings(help)
-    for k, v in options.items():
-        v = str(v)
-        for n, x in enumerate(command_line_args):
+    args = sys.argv[1:]
+    for k, v in t.items():
+        for n, x in enumerate(args):
             if x == '-'+k[0] or x == '--'+k:
-                if v == "true":
-                    v = "false"
-                elif v == "false":
-                    v = "true"
+                if v == 'false':
+                    v = 'true'
+                elif v == 'true':
+                    v = 'false'
                 else:
-                    v = command_line_args[n+1]
-        options[k] = coerce(v)
-
-    return options
+                    v = args[n+1]
+        t[k] = coerce(v)
+    return t
 
 def csv(sFilename, fun):
     """
@@ -263,24 +266,32 @@ def bins(the,cols,rowss):
     -- the column into, say, 16 bins, then we call `mergeAny` to see
     -- how many of them can be combined with their neighboring bin).
     """
-    out =[]
-    for col in cols:
-        ranges = {}
-        for y, rows in rowss.items():
-            for row in rows:
-                x = row.cells[col.at]
-                if x!= '?':
-                    k = int(bin(the,col,x))
-                    if not k in ranges:
-                        ranges[k] = RANGE(col.at, col.txt, x)
-                    extend(ranges[k], x, y)
-        ranges = list(dict(sorted(ranges.items())).values())
-        if(isinstance(col, Sym)):
-            r = ranges
+    def withAllRows(col):
+        def xy(x,y):
+            nonlocal n
+            if x != '?':
+                n = n + 1
+                k = bin(the, col, x)
+                ranges[k] = ranges.get(k, RANGE(col.at,col.txt,x))
+                extend(ranges[k], x, y)
+        n,ranges = 0,{}
+        for y,rows in rowss.items():
+            for _,row in enumerate(rows):
+                xy(row.cells[col.at],y)
+        return n, ranges
+    
+    def with1Col(col):
+        def itself(x):
+            return x
+        n,ranges = withAllRows(col)
+        ranges   = sorted(list(map(itself, ranges.values())),key = lambda x: x['lo'])
+        if   type(col) == Sym:
+            return ranges 
         else:
-            r = mergeAny(ranges)
-        out.append(r)
-    return out
+            return merges(ranges, n/the['bins'], the['d']*col.div()) 
+    
+    ret = list(map(with1Col, cols))
+    return ret
 
 def bin(the,col,x):
     """
@@ -308,14 +319,6 @@ def merge(col1,col2):
         new.hi = max(col1.hi, col2.hi) 
     return new
 
-def RANGE(at,txt,lo,hi=None):
-    """
-    -- Create a RANGE  that tracks the y dependent values seen in 
-    -- the range `lo` to `hi` some independent variable in column number `at` whose name is `txt`. 
-    -- Note that the way this is used (in the `bins` function, below)
-    -- for  symbolic columns, `lo` is always the same as `hi`.
-    """
-    return {'at':at,'txt':txt,'lo':lo,'hi':lo or hi or lo,'y':Sym()}
 
 def extend(range,n,s):
     """
@@ -346,7 +349,7 @@ def value(has,nB = None, nR = None, sGoal = None):
     return b**2/(b+r)
 
 
-def merge2(col1,col2):
+def merge2(col1, col2):
     """
     -- If the whole is as good (or simpler) than the parts,
     -- then return the 
@@ -354,6 +357,53 @@ def merge2(col1,col2):
     -- Called by function `mergeMany`.
     """
     new = merge(col1,col2)
+    if new.div() <= (col1.div()*col1.n + col2.div()*col2.n)/new.n:
+        return new
+
+def merges(ranges0,nSmall,nFar):
+    """
+    -- Given a sorted list of ranges, try fusing adjacent items
+    -- (stopping when no more fuse-ings can be found). When done,
+    -- make the ranges run from minus to plus infinity
+    -- (with no gaps in between).
+    """
+    def tyr2merge(left,right,j):
+        y = merged(left['y'], right['y'], nSmall, nFar)
+        if y: 
+            j = j+1
+            left['hi'], left['y'] = right['hi'], y
+        return j , left
+
+    def noGaps(t):
+        if not t:
+            return t
+        for j in range(1,len(t)):
+            t[j]['lo'] = t[j-1]['hi']
+        t[0]['lo']  = float('-inf')
+        t[len(t)-1]['hi'] =  float('inf')
+        return t
+
+    ranges1,j,here = [],0, None
+    while j < len(ranges0):
+        here = ranges0[j]
+        if j < len(ranges0)-1:
+            j,here = tyr2merge(here, ranges0[j+1], j)
+        j=j+1
+        ranges1.append(here)
+    return noGaps(ranges0) if len(ranges0)==len(ranges1) else merges(ranges1,nSmall,nFar)
+    
+    
+def merged(col1,col2,nSmall, nFar):
+    """
+    -- If (1) the parts are too small or
+    -- (2) the whole is as good (or simpler) than the parts,
+    -- then return the merge.
+    """
+    new = merge(col1,col2)
+    if nSmall and col1.n < nSmall or col2.n < nSmall:
+        return new
+    if nFar   and not type(col1) == Sym and abs(col1.div() - col2.div()) < nFar:
+        return new
     if new.div() <= (col1.div()*col1.n + col2.div()*col2.n)/new.n:
         return new
 
@@ -429,3 +479,122 @@ def firstN(sort_ranges,s_fun):
             out,most = rule,temp
     
     return out,most
+    
+def samples(t,n=0):
+    """
+    function samples that takes argument t and n.
+    n here is None by default unless specified.
+    """
+    u = []
+    for i in range(1, n or len(t)+1):
+        u.append(t[random.randint(0, len(t)-1)])
+    return u
+    
+def gaussian(mu,sd):
+    """
+    n;
+    return a sample from a Gaussian with mean `mu` and sd `sd`
+    """
+    mu = mu or 0
+    sd = sd or 1
+    return mu + sd * math.sqrt(-2 * math.log(random.random())) * math.cos(2 * math.pi * random.random())
+    
+def delta(i, other):
+    """
+    calculating Cohen's d, which is a common effect size measure that standardizes the difference between means by dividing by the pooled standard deviation of the two groups.
+    """
+    e, y, z = 1E-32, i, other
+    return abs(y.mu - z.mu) / ((e + y.sd**2/y.n + z.sd**2/z.n)**0.5)
+    
+def bootstrap(y0, z0):
+    """
+    --- x will hold all of y0,z0
+    --- y contains just y0
+    --- z contains just z0
+    --- tobs is some difference seen in the whole space
+    --- yhat and zhat are y,z fiddled to have the same mean
+    -- if we have seen enough n, then we are the same
+    -- On Tuesdays and Thursdays I lie awake at night convinced this should be "<"
+    -- and the above "> obs" should be "abs(delta - tobs) > someCriticalValue".
+    """
+    x, y, z, yhat, zhat = Num(), Num(), Num(), [], []
+    for y1 in y0:
+        x.add(y1)
+        y.add(y1)
+
+    for z1 in z0:
+        x.add(z1)
+        z.add(z1)
+  
+    xmu, ymu, zmu = x.mu, y.mu, z.mu
+  
+    for y1 in y0:
+        yhat.append(y1 - ymu + xmu)
+  
+    for z1 in z0:
+        zhat.append(z1 - zmu + xmu)
+    
+  
+    tobs = delta(y,z)
+    n = 0
+    for i in range(0,the['bootstrap'] + 1):
+        if delta(Num(t = samples(yhat)), Num(t = samples(zhat))) > tobs:
+            n = n + 1 
+   
+    return (n/the['bootstrap']) >= the['conf']
+
+def RX(t,s):
+    """
+    takes argument t and s where s is defaulted to None unless specified.
+    sort t and return a dictionary based on value of s
+    """
+    t.sort()
+    
+    if s == None:
+        return {'name': '', 'rank': 0, 'n': len(t), 'show': '', 'has': t}
+    
+    return {'name': s, 'rank': 0, 'n': len(t), 'show': '', 'has': t}
+    
+    
+def div(t):
+    """
+    operation based on presence of 'has' in `t`.
+    """
+    if 'has' in t.keys():
+        t = t['has']
+    
+    return (t[int(len(t)*9/10)] - t[int(len(t)*1/10)]) / 2.56
+    
+    
+def mid(t):
+    """
+    calculates the median of a list of numbers.
+    """
+    if 'has' in t.keys():
+        t = t['has']
+    
+    n = len(t) // 2
+    if len(t) % 2 == 0:
+        return (t[n] + t[n+1])/2
+        
+    return t[n+1]
+    
+
+def st_avg(data_array):
+    res = {}
+    for x in data_array:
+        for k,v in x.stats().items():
+            res[k] = res.get(k,0) + v
+    for k,v in res.items():
+        res[k] /= the['n_iter']
+    return res
+
+def missing_val(file, DATA):
+    df = pd.read_csv(file)
+    for col in df.columns[df.eq('?').any()]:
+        df[col] = df[col].replace('?', np.nan)
+        df[col] = df[col].astype(float)
+        df[col] = df[col].fillna(df[col].mean())
+    file = file.replace('.csv', '_imputed.csv')
+    df.to_csv(file, index=False)
+    return DATA(file)

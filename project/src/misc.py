@@ -9,6 +9,8 @@ import io
 from Num import *
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
+from sklearn.impute import SimpleImputer
 
 # the = {'bootstrap': 512, 'conf' : 0.05, 'cliff' : 0.4, 'cohen' : 0.35, 'Fmt' : """'%6.2f'""", 'width' : 40}
 the = { 'dump': False, 'go': None, 'seed': 937162211, 'bootstrap':512, 'conf':0.05, 'cliffs':.4, 'cohen':.35, 'Fmt': "{:.2f}", 'width':40, 'n_iter': 20, 'min': 0.5, 'Halves': 512, 'Far': 0.95, 'Reuse': True, 'rest': 10, 'bins': 16, 'd': 0.35}
@@ -321,8 +323,8 @@ def extend(range,n,s):
     """
     -- Update a RANGE to cover `x` and `y`
     """
-    range['lo'] = min(float(n), float(range['lo']))
-    range['hi'] = max(float(n), float(range['hi']))
+    range['lo'] = min(n, range['lo'])
+    range['hi'] = max(n, range['hi'])
     range['y'].add(s)
 
 def itself(x):
@@ -577,21 +579,26 @@ def mid(t):
     return t[n+1]
     
 
-def st_avg(data_array):
-    res = {}
-    for x in data_array:
-        for k,v in x.stats().items():
-            res[k] = res.get(k,0) + v
-    for k,v in res.items():
-        res[k] /= the['n_iter']
-    return res
-
-def missing_val(file, DATA):
+def data_manipulation(file, DATA):
     df = pd.read_csv(file)
-    for col in df.columns[df.eq('?').any()]:
-        df[col] = df[col].replace('?', np.nan)
-        df[col] = df[col].astype(float)
-        df[col] = df[col].fillna(df[col].mean())
-    file = file.replace('.csv', '_imputed.csv')
+    for col in df.columns:
+        if df[col].isnull().sum() > 0:
+            df[col].fillna(df[col].mean(), inplace=True)
+        for col in df.columns[df.eq('?').any()]:
+            if df[col].dtype == 'O':
+                df = df[df[col] != "?"]
+            else:
+                df[col] = df[col].replace('?', np.nan)
+                df[col] = df[col].astype(float)
+                df[col].fillna(df[col].mean(), inplace=True)
+
+
+    oe = OrdinalEncoder()
+    for col in df.select_dtypes(include=['object']):
+        if col.strip()[0].islower():
+            df[col] = oe.fit_transform(df[[col]])
+
+    
+    file = file.replace('.csv', '_modified.csv')
     df.to_csv(file, index=False)
     return DATA(file)

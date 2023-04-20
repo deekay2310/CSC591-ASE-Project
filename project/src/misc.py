@@ -7,9 +7,11 @@ from Sym import *
 import copy
 import io
 from Num import *
+import pandas as pd
+import numpy as np
 
 # the = {'bootstrap': 512, 'conf' : 0.05, 'cliff' : 0.4, 'cohen' : 0.35, 'Fmt' : """'%6.2f'""", 'width' : 40}
-the = { 'dump': False, 'go': None, 'seed': 937162211, 'bootstrap':512, 'conf':0.05, 'cliff':.4, 'cohen':.35, 'Fmt': "{:.2f}", 'width':40, 'n_iter': 20, 'min': 0.5, 'Halves': 512, 'Far': 0.95, 'Reuse': True, 'rest': 10, 'bins': 16, 'd': 0.35}
+the = { 'dump': False, 'go': None, 'seed': 937162211, 'bootstrap':512, 'conf':0.05, 'cliffs':.4, 'cohen':.35, 'Fmt': "{:.2f}", 'width':40, 'n_iter': 20, 'min': 0.5, 'Halves': 512, 'Far': 0.95, 'Reuse': True, 'rest': 10, 'bins': 16, 'd': 0.35}
 
 #Numerics
 help = """   
@@ -183,10 +185,7 @@ def settings(s):
     """
     --> t;  parse help string to extract a table of options
     """
-    t = {}
-    for k,v in re.findall("[-][\S]+[\s]+[-][-]([\S]+)[^\n]+= ([\S]+)", s): 
-        t[k] = coerce(v)
-    return t
+    return dict(re.findall("\n[\s]+[-][\S]+[\s]+[-][-]([\S]+)[^\n]+= ([\S]+)",s))
 
 def cli(t):
     """

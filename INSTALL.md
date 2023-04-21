@@ -34,7 +34,11 @@ python setup.py install
 
 ## Running the Project
 
-You can now start the project by running the following command to run all the tests:
+You can now start the project by moving into src folder by:
 ```
-python3 src/main.py -g all
+cd src
+```
+And then execute
+```
+python main.py -f <dataset_file_name.csv>
 ```

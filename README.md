@@ -53,3 +53,28 @@
 
 
 This is the README file for a Multi-Objective Semi-Supervised Explanation System - the final project by Group 7 for the course Automated Software Engineering (CSC591).
+
+## Requirements
+
+- Python3
+- Required packages mentioned in `requirements.txt` file
+
+## Installation
+
+Please refer to the [INSTALL.md](INSTALL.md) for information on how to install the project.
+
+## Documentation
+
+Please find the documentation for this repository by clicking [here](https://deekay2310.github.io/ASE-Group7-HW-docs/src.html).
+
+## Contributing
+
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) for information on how to contribute to the project.
+
+## License
+
+This project is licensed under [MIT LICENSE](LICENSE.md)
+
+## Support
+
+Please open an issue on the project's GitHub repository if you encounter any problems or have any questions.

@@ -98,58 +98,58 @@ def main():
         res.append([f"{base} to {diff}"] + result)
     print(tabulate(res, headers=headers,numalign="right"))
 
-    temp_dict = {}
-    for k1,v1 in tbl1.items():
-        u = {}
-        for x in v1['data']:
-            for k,v in x.stats().items():
-                u[k] = u.get(k,0) + v
-        for k,v in u.items():
-            temp_dict[k1] = {}
+#     temp_dict = {}
+#     for k1,v1 in tbl1.items():
+#         u = {}
+#         for x in v1['data']:
+#             for k,v in x.stats().items():
+#                 u[k] = u.get(k,0) + v
+#         for k,v in u.items():
+#             temp_dict[k1] = {}
 
-    for k1, v1 in temp_dict.items():
-        for k, v in tbl1.items():
-            temp_dict[k1][k] = []
+#     for k1, v1 in temp_dict.items():
+#         for k, v in tbl1.items():
+#             temp_dict[k1][k] = []
 
-    for k, v in tbl1.items():
-        print(v)
-        stats = get_stats(v)
-        for i in range(len(stats)):
-            for k1, v1 in stats[i].items():
-                temp_dict[k1][k].append(v1)
+#     for k, v in tbl1.items():
+#         print(v)
+#         stats = get_stats(v)
+#         for i in range(len(stats)):
+#             for k1, v1 in stats[i].items():
+#                 temp_dict[k1][k].append(v1)
 
-    for k, v in temp_dict.items():
-        print("Scott Knott for " + k + ":")
-        rxs = []
-        for k1, v1 in temp_dict[k].items():
-            rxs.append(RX(v1, k1))
+#     for k, v in temp_dict.items():
+#         print("Scott Knott for " + k + ":")
+#         rxs = []
+#         for k1, v1 in temp_dict[k].items():
+#             rxs.append(RX(v1, k1))
             
-        for rx in tiles(scottKnot(rxs)):
-            print(f" \t{rx['rank']}\t{rx['name']}\t{rx['show']}")
+#         for rx in tiles(scottKnot(rxs)):
+#             print(f" \t{rx['rank']}\t{rx['name']}\t{rx['show']}")
         
-        print()
+#         print()
 
 
-def get_stats(data_array):
-    """
-    gets the average stats, given the data array objects
-    """
-    res = {}
-    for item in data_array:
-        stats = item.stats()
-        for k, v in stats.items():
-            res[k] = res.get(k, 0) + v
-    for k, v in res.items():
-        res[k] /= config.the["nTimes"]
-    return res
+# def get_stats(data_array):
+#     """
+#     gets the average stats, given the data array objects
+#     """
+#     res = {}
+#     for item in data_array:
+#         stats = item.stats()
+#         for k, v in stats.items():
+#             res[k] = res.get(k, 0) + v
+#     for k, v in res.items():
+#         res[k] /= config.the["nTimes"]
+#     return res
 
 
-def get_all_runs(data_array):
-    final = []
-    for item in data_array:
-        stats = item.stats()
-        final.append(stats)
-    return final
+# def get_all_runs(data_array):
+#     final = []
+#     for item in data_array:
+#         stats = item.stats()
+#         final.append(stats)
+#     return final
     
 if __name__ == '__main__':
     main()

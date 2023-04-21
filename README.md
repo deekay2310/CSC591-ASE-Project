@@ -55,9 +55,9 @@
 This is the README file for a Multi-Objective Semi-Supervised Explanation System - the final project by Group 7 for the course Automated Software Engineering (CSC591).
 
 ## How to run 
-Make sure you have python 3.x and above installed
-Make sure you have pip/pip3 installed
-Download the requirements by executing `pip install -r requirements.txt`
-Switch to the src folder by `cd src`
-Execute the command `python main.py -f <dataset_file_name.csv>`
+- Make sure you have python 3.x and above installed
+- Make sure you have pip/pip3 installed
+- Download the requirements by executing `pip install -r requirements.txt`
+- Switch to the src folder by `cd src`
+- Execute the command `python main.py -f <dataset_file_name.csv>`
 
